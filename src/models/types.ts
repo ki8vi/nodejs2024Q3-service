@@ -24,3 +24,9 @@ export interface Track {
   albumId: string | null; // refers to Album
   duration: number; // integer number
 }
+
+export interface Artist {
+  id: string; // uuid v4
+  name: string;
+  grammy: boolean;
+}
