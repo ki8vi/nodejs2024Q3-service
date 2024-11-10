@@ -4,9 +4,6 @@ info:
   description: Home music library service
   version: 1.0.0
 
-servers:
-  - url: /api
-
 components:
   schemas:
     User:
@@ -189,10 +186,10 @@ paths:
           description: Bad request
         409:
           description: Conflict. Login already exists
-  /users:
+  /user:
     get:
       tags:
-        - Users
+        - User
       summary: Get all users
       description: Gets all users
       responses:
@@ -208,7 +205,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
     post:
       tags:
-        - Users
+        - User
       summary: Create user
       description: Creates a new user
       requestBody:
@@ -239,7 +236,7 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /users/{userId}:
+  /user/{userId}:
     parameters:
       - name: userId
         in: path
@@ -248,7 +245,7 @@ paths:
           type: string
     get:
       tags:
-        - Users
+        - User
       summary: Get single user by id
       description: Get single user by id
       responses:
@@ -267,7 +264,7 @@ paths:
 
     put:
       tags:
-        - Users
+        - User
       summary: Update a user's password
       description: Updates a user's password by ID
       requestBody:
@@ -322,7 +319,7 @@ paths:
 
     delete:
       tags:
-        - Users
+        - User
       summary: Delete user
       description: Deletes user by ID.
       responses:
@@ -334,7 +331,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: User not found
-  /tracks:
+  /track:
     get:
       tags:
         - Track
@@ -376,6 +373,8 @@ paths:
                   description: In seconds
               required:
                 - name
+                - artistId
+                - albumId
                 - duration
       responses:
         201:
@@ -388,7 +387,7 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /tracks/{id}:
+  /track/{id}:
     parameters:
       - name: id
         in: path
@@ -444,6 +443,8 @@ paths:
                   nullable: true
               required:
                 - name
+                - artistId
+                - albumId
                 - duration
       responses:
         200:
@@ -492,7 +493,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Track was not found.
-  /albums:
+  /album:
     get:
       tags:
         - Album
@@ -532,6 +533,7 @@ paths:
                   nullable: true
               required:
                 - name
+                - artistId
                 - year
       responses:
         201:
@@ -544,7 +546,7 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /albums/{id}:
+  /album/{id}:
     parameters:
       - name: id
         in: path
@@ -593,6 +595,7 @@ paths:
                   nullable: true
               required:
                 - name
+                - artistId
                 - year
       responses:
         200:
@@ -621,7 +624,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: Album was not found.
-  /artists:
+  /artist:
     get:
       tags:
         - Artist
@@ -668,7 +671,7 @@ paths:
           description: Bad request. body does not contain required fields
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /artists/{id}:
+  /artist/{id}:
     parameters:
       - name: id
         in: path

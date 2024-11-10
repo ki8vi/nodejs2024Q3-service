@@ -1,21 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { readFileSync } from 'node:fs';
+import { load } from 'js-yaml';
+import { serve, setup } from 'swagger-ui-express';
 import 'dotenv/config';
 
 const PORT = process.env.PORT ?? 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  const config = new DocumentBuilder()
-    .setTitle('API Documentation')
-    .setDescription('The API description')
-    .setVersion('1.0')
-    .addTag('cats')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('doc', app, document);
+  const swaggerDoc = load(readFileSync('./doc/api.yaml', 'utf8'));
+  app.use('/doc', serve, setup(swaggerDoc));
 
   await app.listen(PORT);
 }
