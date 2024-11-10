@@ -1,51 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import { Track } from 'src/models/types';
 import { TrackDto } from './track.dto';
+import { GlobalBdService } from 'src/global-bd/global-bd.service';
 
 @Injectable()
 export class TrackService {
-  private tracks: Track[];
-  constructor() {
-    this.tracks = [];
-  }
+  constructor(private global: GlobalBdService) {}
 
   async getAllTacks(): Promise<Track[]> {
-    return this.tracks;
+    return await this.global.getTracks();
   }
 
   async getTrackById(id: string): Promise<Track | null> {
-    const track = this.tracks.find((us) => us.id === id);
-    if (track) return track;
-    return null;
+    return await this.global.getTrackById(id);
   }
 
   async create(body: TrackDto) {
-    const id = randomUUID();
-    const newTrack: Track = {
-      id,
-      name: body.name,
-      artistId: body.artistId,
-      albumId: body.albumId,
-      duration: body.duration,
-    };
-    this.tracks.push(newTrack);
-    return newTrack;
+    return await this.global.createTrack(body);
   }
 
   async updateTrack(track: Track): Promise<TrackDto | null> {
-    const trackIdx = this.tracks.findIndex((tr) => tr.id === track.id);
-    if (trackIdx !== -1) {
-      this.tracks[trackIdx] = track;
-      return track;
-    }
-    return null;
+    return await this.global.updateTrack(track.id, track);
   }
 
   async deleteTrack(id: string): Promise<void> {
-    const trackIdx = this.tracks.findIndex((user) => user.id === id);
-    if (trackIdx !== -1) {
-      this.tracks.splice(trackIdx, 1);
-    }
+    return await this.global.deleteTrack(id);
   }
 }

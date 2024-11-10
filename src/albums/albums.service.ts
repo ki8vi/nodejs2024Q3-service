@@ -1,51 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { Album } from 'src/models/types';
 import { AlbumDto } from './album.dto';
-import { randomUUID } from 'crypto';
+import { GlobalBdService } from 'src/global-bd/global-bd.service';
 
 @Injectable()
 export class AlbumsService {
-  private albums: Album[];
-
-  constructor() {
-    this.albums = [];
-  }
+  constructor(private global: GlobalBdService) {}
 
   async getAllAlbums(): Promise<Album[]> {
-    return this.albums;
+    return await this.global.getAlbums();
   }
 
   async getAlbumById(id: string): Promise<Album | null> {
-    const album = this.albums.find((alb) => alb.id === id);
-    if (album) return album;
-    return null;
+    return await this.global.getAlbumById(id);
   }
 
   async createAlbum(body: AlbumDto) {
-    const id = randomUUID();
-    const newAlbum: Album = {
-      id,
-      name: body.name,
-      artistId: body.artistId,
-      year: body.year,
-    };
-    this.albums.push(newAlbum);
-    return newAlbum;
+    return await this.global.createAlbum(body);
   }
 
-  async updateAlbum(artist: Album): Promise<AlbumDto | null> {
-    const albumIdx = this.albums.findIndex((alb) => alb.id === artist.id);
-    if (albumIdx !== -1) {
-      this.albums[albumIdx] = artist;
-      return artist;
-    }
-    return null;
+  async updateAlbum(body: Album): Promise<AlbumDto | null> {
+    return await this.global.updateAlbum(body.id, body);
   }
 
   async deleteAlbum(id: string): Promise<void> {
-    const albumIdx = this.albums.findIndex((alb) => alb.id === id);
-    if (albumIdx !== -1) {
-      this.albums.splice(albumIdx, 1);
-    }
+    return await this.global.deleteAlbum(id);
   }
 }

@@ -1,21 +1,19 @@
 import { Expose } from 'class-transformer';
-import { IsString, IsNotEmpty, IsInt } from 'class-validator';
+import { IsString, IsInt, IsOptional } from 'class-validator';
 
 export class TrackDto {
   @IsString()
-  @IsNotEmpty()
   @Expose()
   name: string;
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @Expose()
   artistId: string | null;
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @Expose()
   albumId: string | null;
   @IsInt()
-  @IsNotEmpty()
   @Expose()
   duration: number;
 }

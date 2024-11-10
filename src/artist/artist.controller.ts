@@ -67,7 +67,10 @@ export class ArtistController {
     if (!artist) {
       throw new NotFoundException(`Artist with ID ${id} doesn't exist`);
     }
-    const updArtist = await this.artistService.updateArtist({ id, ...body });
+    const updArtist = await this.artistService.updateArtist({
+      id,
+      ...body,
+    });
     if (updArtist !== null) return updArtist;
   }
 

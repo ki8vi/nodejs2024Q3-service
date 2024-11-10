@@ -1,21 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
+import { GlobalBdService } from 'src/global-bd/global-bd.service';
 import { CreateUserDto, User } from 'src/models/types';
 
 @Injectable()
 export class UsersService {
-  private users: User[];
-
-  constructor() {
-    this.users = [];
-  }
+  constructor(private global: GlobalBdService) {}
 
   async getUsers(): Promise<User[]> {
-    return this.users;
+    return await this.global.getUsers();
   }
 
   async getUserById(id: string): Promise<User | null> {
-    const user = this.users.find((us) => us.id === id);
+    const users = await this.global.getUsers();
+    const user = users.find((us) => us.id === id);
     if (user) return user;
     return null;
   }
@@ -31,23 +29,15 @@ export class UsersService {
       createdAt: today,
       updatedAt: today,
     };
-    this.users.push(user);
+    this.global.createUser(user);
     return user;
   }
 
   async updatePsw(changedUser: User): Promise<User | null> {
-    const userIdx = this.users.findIndex((user) => user.id === changedUser.id);
-    if (userIdx !== -1) {
-      this.users[userIdx] = changedUser;
-      return changedUser;
-    }
-    return null;
+    return await this.global.updateUserPassword(changedUser);
   }
 
   async deleteUser(id: string): Promise<void> {
-    const userIdx = this.users.findIndex((user) => user.id === id);
-    if (userIdx !== -1) {
-      this.users.splice(userIdx, 1);
-    }
+    return await this.global.deleteUser(id);
   }
 }

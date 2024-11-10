@@ -18,7 +18,7 @@ import { validate } from 'uuid';
 import { UserDto } from './user.dto';
 import { UpdatePswdDto } from './updatePsw.dto';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
