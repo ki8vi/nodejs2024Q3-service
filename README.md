@@ -11,6 +11,7 @@
 git clone {repository URL}
 ```
 
+## Switch to ```api``` branch
 ## Installing NPM modules
 
 ```

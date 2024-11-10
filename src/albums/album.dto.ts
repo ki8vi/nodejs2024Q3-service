@@ -10,7 +10,7 @@ export class AlbumDto {
   @IsNotEmpty()
   @Expose()
   year: number;
-
+  @IsNotEmpty()
   @IsString()
   @IsOptional()
   @Expose()
