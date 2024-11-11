@@ -14,7 +14,7 @@ Ensure that **Node.js** and **Git** are installed on your machine.
 ## Switch to ```api``` branch
 ## Installing NPM modules
 
-```npm install```
+```npm install --legacy-peer-deps```
 
 ## Running application
 
