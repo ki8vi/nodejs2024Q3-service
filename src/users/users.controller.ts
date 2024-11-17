@@ -89,6 +89,7 @@ export class UsersController {
     user.password = body.newPassword;
     user.updatedAt = Date.now();
     user.version += 1;
+    // const udUser = await this.usersService.updatePsw(user);
     const udUser = await this.usersService.updatePsw(user);
     if (udUser !== null) {
       const cpUser = { ...udUser };

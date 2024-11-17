@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
 import { AlbumDto } from 'src/albums/album.dto';
 import { ArtistDto } from 'src/artist/artist.dto';
@@ -10,6 +11,8 @@ import {
   User,
 } from 'src/models/types';
 import { TrackDto } from 'src/track/track.dto';
+import { UserEntity } from 'src/users/user.entity';
+import { Repository } from 'typeorm';
 
 interface GlobalDB {
   users: User[];
@@ -27,7 +30,10 @@ interface GlobalDB {
 export class GlobalBdService {
   private globalDB: GlobalDB;
 
-  constructor() {
+  constructor(
+    @InjectRepository(UserEntity)
+    private userReposutory: Repository<UserEntity>,
+  ) {
     this.globalDB = {
       users: [],
       artists: [],
@@ -42,46 +48,73 @@ export class GlobalBdService {
   }
 
   // USERS
-  async getUsers(): Promise<User[]> {
-    return this.globalDB.users;
+  // async getUsers(): Promise<User[]> {
+  //   return this.globalDB.users;
+  // }
+
+  //UsersBD
+  async getUsers(): Promise<UserEntity[]> {
+    return await this.userReposutory.find();
   }
 
-  async getUserById(id: string): Promise<User | null> {
-    const user = this.globalDB.users.find((user) => user.id === id);
+  // async getUserById(id: string): Promise<User | null> {
+  //   const user = this.globalDB.users.find((user) => user.id === id);
+  //   return user || null;
+  // }
+
+  async getUserById(id: string): Promise<UserEntity | null> {
+    const user = await this.userReposutory.findOne({ where: { id } });
     return user || null;
   }
 
-  async createUser(user: User): Promise<User> {
-    this.globalDB.users.push(user);
-    return user;
+  // async createUser(user: User): Promise<User> {
+  //   this.globalDB.users.push(user);
+  //   return user;
+  // }
+  async createUser(user: User): Promise<UserEntity> {
+    const newUser = this.userReposutory.create(user);
+    return await this.userReposutory.save(newUser);
   }
 
-  async updateUserPassword(changedUser: User): Promise<User | null> {
-    const userIdx = this.globalDB.users.findIndex(
-      (user) => user.id === changedUser.id,
-    );
-    if (userIdx !== -1) {
-      this.globalDB.users[userIdx] = {
-        ...this.globalDB.users[userIdx],
-        password: changedUser.password,
-      };
-      return this.globalDB.users[userIdx];
-    }
-    return null;
-  }
+  // async updateUserPassword(changedUser: User): Promise<User | null> {
+  //   const userIdx = this.globalDB.users.findIndex(
+  //     (user) => user.id === changedUser.id,
+  //   );
+  //   if (userIdx !== -1) {
+  //     this.globalDB.users[userIdx] = {
+  //       ...this.globalDB.users[userIdx],
+  //       password: changedUser.password,
+  //     };
+  //     return this.globalDB.users[userIdx];
+  //   }
+  //   return null;
+  // }
+  // async updateUserPassword(changedUser: User): Promise<User | null> {
+  //   const user = await this.userReposutory.findOne({
+  //     where: { id: changedUser.id },
+  //   });
+  //   if (!user) return null;
+  // }
 
+  // async updateUser(id: string, updatedUser: User): Promise<User | null> {
+  //   const userIndex = this.globalDB.users.findIndex((user) => user.id === id);
+  //   if (userIndex === -1) return null;
+  //   this.globalDB.users[userIndex] = updatedUser;
+  //   return updatedUser;
+  // }
   async updateUser(id: string, updatedUser: User): Promise<User | null> {
-    const userIndex = this.globalDB.users.findIndex((user) => user.id === id);
-    if (userIndex === -1) return null;
-    this.globalDB.users[userIndex] = updatedUser;
-    return updatedUser;
+    await this.userReposutory.update(id, updatedUser);
+    return await this.userReposutory.findOne({ where: { id } });
   }
 
+  // async deleteUser(id: string): Promise<void> {
+  //   const userIndex = this.globalDB.users.findIndex((user) => user.id === id);
+  //   if (userIndex !== -1) {
+  //     this.globalDB.users.splice(userIndex, 1);
+  //   }
+  // }
   async deleteUser(id: string): Promise<void> {
-    const userIndex = this.globalDB.users.findIndex((user) => user.id === id);
-    if (userIndex !== -1) {
-      this.globalDB.users.splice(userIndex, 1);
-    }
+    await this.userReposutory.delete(id);
   }
 
   // ARTISTS

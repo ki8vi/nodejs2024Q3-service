@@ -7,6 +7,8 @@ import { ArtistModule } from './artist/artist.module';
 import { AlbumsModule } from './albums/albums.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { GlobalBdModule } from './global-bd/global-bd.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import 'dotenv/config';
 
 @Module({
   imports: [
@@ -16,6 +18,17 @@ import { GlobalBdModule } from './global-bd/global-bd.module';
     AlbumsModule,
     FavoritesModule,
     GlobalBdModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'ki8vi',
+      password: 'rs12345',
+      database: 'library',
+      // autoLoadEntities: true,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

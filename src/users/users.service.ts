@@ -2,16 +2,27 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { GlobalBdService } from 'src/global-bd/global-bd.service';
 import { CreateUserDto, User } from 'src/models/types';
+import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(private global: GlobalBdService) {}
 
-  async getUsers(): Promise<User[]> {
+  // async getUsers(): Promise<User[]> {
+  //   return await this.global.getUsers();
+  // }
+
+  // async getUserById(id: string): Promise<User | null> {
+  //   const users = await this.global.getUsers();
+  //   const user = users.find((us) => us.id === id);
+  //   if (user) return user;
+  //   return null;
+  // }
+  async getUsers(): Promise<UserEntity[]> {
     return await this.global.getUsers();
   }
 
-  async getUserById(id: string): Promise<User | null> {
+  async getUserById(id: string): Promise<UserEntity | null> {
     const users = await this.global.getUsers();
     const user = users.find((us) => us.id === id);
     if (user) return user;
@@ -34,10 +45,10 @@ export class UsersService {
   }
 
   async updatePsw(changedUser: User): Promise<User | null> {
-    return await this.global.updateUserPassword(changedUser);
+    return await this.global.updateUser(changedUser.id, changedUser);
   }
 
   async deleteUser(id: string): Promise<void> {
-    return await this.global.deleteUser(id);
+    await this.global.deleteUser(id);
   }
 }
