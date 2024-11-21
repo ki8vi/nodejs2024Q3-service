@@ -1,27 +1,29 @@
-version: '3,9'
 services:
   nestapp:
     container_name: 'nestapp'
-    image: nestapp
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      -4000:4000
+      - "4000:4000"
     environment:
-      - DB_TYPE=postgres
-      - DB_HOST=localhost
+      - DB_HOST=db
       - DB_PORT=5432
-      - DB_USER=ki8vi
-      - DB_PSW=your_password
-      - DB_NAME=your_database
+      - DB_USERNAME=ki8vi
+      - DB_PASSWORD=rs12345
+      - DB_NAME=library
     depends_on:
       - db
-  db:
-    container_name: db
-    image: postgres:12
-    ports:
-      -5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
 
+  db:
+    container_name: 'db'
+    build:
+      context: .
+      dockerfile: Dockerfile.pg
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

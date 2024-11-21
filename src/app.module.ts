@@ -9,6 +9,11 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { GlobalBdModule } from './global-bd/global-bd.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import 'dotenv/config';
+import { UserEntity } from './users/user.entity';
+import { TrackEntity } from './track/track.entity';
+import { ArtistEntity } from './artist/artist.entity';
+import { AlbumEntity } from './albums/album.entity';
+import { FavoritesEntity } from './favorites/favorites.entity';
 
 @Module({
   imports: [
@@ -20,13 +25,18 @@ import 'dotenv/config';
     GlobalBdModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'ki8vi',
-      password: 'rs12345',
-      database: 'library',
-      // autoLoadEntities: true,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      host: process.env.DB_HOST || 'db',
+      port: +process.env.DB_PORT || 5432,
+      username: process.env.DB_USERNAME || 'ki8vi',
+      password: process.env.DB_PSW || 'rs12345',
+      database: process.env.DB_NAME || 'library',
+      entities: [
+        UserEntity,
+        TrackEntity,
+        ArtistEntity,
+        AlbumEntity,
+        FavoritesEntity,
+      ],
       synchronize: true,
     }),
   ],

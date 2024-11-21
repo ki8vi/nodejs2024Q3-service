@@ -20,7 +20,7 @@ export class ArtistService {
   }
 
   async updateArtist(artist: Artist): Promise<ArtistDto | null> {
-    return await this.global.updateArtist(artist);
+    return await this.global.updateArtist(artist.id, artist);
   }
 
   async deleteArtist(id: string): Promise<void> {

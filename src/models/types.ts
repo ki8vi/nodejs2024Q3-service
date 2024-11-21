@@ -1,3 +1,7 @@
+import { AlbumEntity } from 'src/albums/album.entity';
+import { ArtistEntity } from 'src/artist/artist.entity';
+import { TrackEntity } from 'src/track/track.entity';
+
 export interface User {
   id: string;
   login: string;
@@ -45,7 +49,7 @@ export interface Favorites {
 }
 
 export interface FavoritesResponse {
-  artists: Artist[];
-  albums: Album[];
-  tracks: Track[];
+  artists: ArtistEntity[];
+  albums: AlbumEntity[];
+  tracks: TrackEntity[];
 }
