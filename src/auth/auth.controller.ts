@@ -1,4 +1,10 @@
-import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  BadRequestException,
+  SetMetadata,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupDto, LoginDto, RefreshTokenDto } from './auth.dto';
 
@@ -7,6 +13,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
+  @SetMetadata('noAuth', true)
   async signup(@Body() dto: SignupDto) {
     try {
       return await this.authService.signup(dto);
