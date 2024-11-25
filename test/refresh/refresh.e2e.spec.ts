@@ -53,7 +53,12 @@ describe('Refresh (e2e)', () => {
     if (shouldAuthorizationBeTested) {
       const { accessToken, refreshToken, mockUserId, login, token } =
         await getTokenAndUserId(request);
-      userTokens = { userId: mockUserId, login, accessToken, refreshToken };
+      userTokens = {
+        userId: mockUserId,
+        login,
+        accessToken,
+        refreshToken,
+      };
       headers['Authorization'] = token;
     }
   });
@@ -105,7 +110,9 @@ describe('Refresh (e2e)', () => {
         userId: userTokens.userId,
         login: userTokens.login,
       };
-      const refreshToken = generateRefreshToken(payload, { expiresIn: '0s' });
+      const refreshToken = generateRefreshToken(payload, {
+        expiresIn: '0s',
+      });
       const response = await request
         .post(authRoutes.refresh)
         .send({ refreshToken });

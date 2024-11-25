@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  nestapp:
+    container_name: 'nestapp'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=ki8vi
+      - DB_PASSWORD=rs12345
+      - DB_NAME=library
+    depends_on:
+      - db
+    networks:
+      - app_network
+
+  db:
+    container_name: 'db'
+    build:
+      context: .
+      dockerfile: Dockerfile.pg
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ki8vi
+      POSTGRES_PASSWORD: rs12345
+      POSTGRES_DB: library
+    networks:
+      - app_network
+
+volumes:
+  pgdata:
+
+networks:
+  app_network:
