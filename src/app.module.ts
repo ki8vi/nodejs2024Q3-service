@@ -7,6 +7,10 @@ import { ArtistModule } from './artist/artist.module';
 import { AlbumsModule } from './albums/albums.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { GlobalBdModule } from './global-bd/global-bd.module';
+import { Logger } from './customLogger/customLogger';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { LogInterceptor } from './customLogger/logInterceptor';
+import { HttpExceptionFilter } from './customLogger/filter';
 
 @Module({
   imports: [
@@ -18,6 +22,17 @@ import { GlobalBdModule } from './global-bd/global-bd.module';
     GlobalBdModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    Logger,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LogInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
