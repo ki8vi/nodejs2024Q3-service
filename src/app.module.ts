@@ -11,6 +11,7 @@ import { Logger } from './customLogger/customLogger';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LogInterceptor } from './customLogger/logInterceptor';
 import { HttpExceptionFilter } from './customLogger/filter';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { HttpExceptionFilter } from './customLogger/filter';
     AlbumsModule,
     FavoritesModule,
     GlobalBdModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

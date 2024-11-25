@@ -25,7 +25,6 @@ async function bootstrap() {
   );
 
   app.use('/doc', serve, setup(swaggerDoc));
-
   await app.listen(PORT);
 }
 bootstrap();
