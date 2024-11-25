@@ -12,6 +12,8 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LogInterceptor } from './customLogger/logInterceptor';
 import { HttpExceptionFilter } from './customLogger/filter';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import 'dotenv/config';
 
 @Module({
   imports: [
@@ -22,6 +24,10 @@ import { AuthModule } from './auth/auth.module';
     FavoritesModule,
     GlobalBdModule,
     AuthModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY,
+      signOptions: { expiresIn: process.env.TOKEN_EXPIRE_TIME },
+    }),
   ],
   controllers: [AppController],
   providers: [

@@ -32,8 +32,8 @@ export class AuthService {
     if (userExists) {
       throw new BadRequestException('User already exists');
     }
-
-    const hashedPassword = await bcrypt.hash(password, process.env.CRYPT_SALT);
+    const salt = await bcrypt.genSalt(+process.env.CRYPT_SALT);
+    const hashedPassword = await bcrypt.hash(password, salt);
     const newUser: User = {
       id: randomUUID(),
       login,

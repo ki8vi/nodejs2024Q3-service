@@ -10,6 +10,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -17,8 +18,10 @@ import { UsersService } from './users.service';
 import { validate } from 'uuid';
 import { UserDto } from './user.dto';
 import { UpdatePswdDto } from './updatePsw.dto';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('user')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
