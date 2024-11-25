@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { TrackEntity } from '../track/track.entity';
 import { AlbumEntity } from '../albums/album.entity';
 
-@Entity('artist')
+@Entity()
 export class ArtistEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -8,7 +8,7 @@ import {
 import { ArtistEntity } from '../artist/artist.entity';
 import { AlbumEntity } from '../albums/album.entity';
 
-@Entity('track')
+@Entity()
 export class TrackEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

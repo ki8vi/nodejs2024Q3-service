@@ -9,7 +9,7 @@ import {
 import { ArtistEntity } from '../artist/artist.entity';
 import { TrackEntity } from '../track/track.entity';
 
-@Entity('albums')
+@Entity()
 export class AlbumEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
