@@ -20,5 +20,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    // 'indent': ['error', 2],
+    // 'prettier/prettier': ['error', { tabWidth: 2, useTabs: false }]
   },
 };
