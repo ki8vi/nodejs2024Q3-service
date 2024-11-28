@@ -18,7 +18,7 @@ export class AuthController {
     try {
       return await this.authService.signup(dto);
     } catch (err) {
-      throw new BadRequestException('Here: ', err.message);
+      throw new BadRequestException(err.message);
     }
   }
 

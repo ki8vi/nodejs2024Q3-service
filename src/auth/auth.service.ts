@@ -18,7 +18,7 @@ export class AuthService {
     private readonly globalService: GlobalBdService,
   ) {}
 
-  async signup(dto: SignupDto): Promise<{ message: string }> {
+  async signup(dto: SignupDto): Promise<User> {
     const { login, password } = dto;
 
     if (typeof login !== 'string' || typeof password !== 'string') {
@@ -42,9 +42,9 @@ export class AuthService {
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
-    await this.globalService.createUser(newUser);
+    const createdUser = await this.globalService.createUser(newUser);
 
-    return { message: 'User created successfully' };
+    return createdUser;
   }
 
   async login(
